@@ -83,11 +83,11 @@ namespace UDP_Receiver
 
                     HttpResponseMessage mi = AddCustomerAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion)).Result;
 
-                    IList<Sensor> result = GetCustomersAsync().Result;
-                    foreach (Sensor C in result)
-                    {
-                        Console.WriteLine(C.ToString());
-                    }
+                    //IList<Sensor> result = GetCustomersAsync().Result;
+                    //foreach (Sensor C in result)
+                    //{
+                    //    Console.WriteLine(C.ToString());
+                    //}
 
             }
             //}
