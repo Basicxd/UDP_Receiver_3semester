@@ -12,7 +12,7 @@ namespace UDP_Receiver
 {
     class Program
     {
-        public static string SensorUri = "https://localhost:44378/api/n%C3%B8dopkald";
+        public static string SensorUri = "https://xn--restndopkald20190514095809-zwc.azurewebsites.net/api/nødopkald";
 
         public static async Task<HttpResponseMessage> AddCustomerAsync(Sensor sensor)
         {
@@ -72,23 +72,21 @@ namespace UDP_Receiver
 
                     string dato = tidsSplit[1];
                     string tid = tidsSplit[2];
-                
-                    //Console.WriteLine(motion);
+
+                    string[] motionSplit = motion.Split(' ', 2);
+
+                    string motion1 = motionSplit[0];
+                    string motion2 = motionSplit[1];
+
+                    //Console.WriteLine(motion2);
                     //Console.WriteLine(dato);
                     //Console.WriteLine(tid);
 
                     Sensor sensor = new Sensor();
+                 
+                    HttpResponseMessage mi = AddCustomerAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion2)).Result;
 
                     
-
-                    HttpResponseMessage mi = AddCustomerAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion)).Result;
-
-                    //IList<Sensor> result = GetCustomersAsync().Result;
-                    //foreach (Sensor C in result)
-                    //{
-                    //    Console.WriteLine(C.ToString());
-                    //}
-
             }
             //}
             //catch (Exception e)
@@ -96,11 +94,6 @@ namespace UDP_Receiver
             //    Console.WriteLine(e.ToString());
             //
             //}
-
-
-
-            
-
         }
     }
 }
