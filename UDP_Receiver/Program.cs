@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -46,54 +47,74 @@ namespace UDP_Receiver
 
         static void Main(string[] args)
         {
-            // Skaber en UDPClient for det data der skal læses
+            //Sensor newSensor = new Sensor("18/05/2019", "21:47:30", "Intruders Test");
 
-            UdpClient udpServer = new UdpClient(7000);
+            AddCustomerAsync(new Sensor("18/05/2019", "24:24:24", "Intruders here"));
 
-            //Laver en IPEndPoint til at læse IP Address og Port nummer for afsenderen
-            IPAddress ip = IPAddress.Any;
-            IPEndPoint remoteEndPoint = new IPEndPoint(ip, 7000);
+            Thread.Sleep(3000);
 
-            //try
-            //{
-                Console.WriteLine("Receiver er startet");
-                while (true)
-                {
-                    Byte[] receivebBytes = udpServer.Receive(ref remoteEndPoint);
-
-                    string receivedData = Encoding.ASCII.GetString(receivebBytes);
-
-                    string[] data = receivedData.Split('\n');
-
-                    string motion = data[0];
-                    string datoOgTid = data[1];
-
-                    string[] tidsSplit = datoOgTid.Split(' ');
-
-                    string dato = tidsSplit[1];
-                    string tid = tidsSplit[2];
-
-                    string[] motionSplit = motion.Split(' ', 2);
-
-                    string motion1 = motionSplit[0];
-                    string motion2 = motionSplit[1];
-
-                    //Console.WriteLine(motion2);
-                    //Console.WriteLine(dato);
-                    //Console.WriteLine(tid);
-
-                    Sensor sensor = new Sensor();
-                 
-                    HttpResponseMessage mi = AddCustomerAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion2)).Result;
-
-                    
+            IList<Sensor> result = GetCustomersAsync().Result;
+            Console.WriteLine(result.Count);
+            foreach (var i in result)
+            {
+                Console.WriteLine(i.ToString());
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //
-            //}
+
+            Console.ReadLine();
+
+
+
+            //    // Skaber en UDPClient for det data der skal læses
+
+            //    UdpClient udpServer = new UdpClient(7000);
+
+            //    //Laver en IPEndPoint til at læse IP Address og Port nummer for afsenderen
+            //    IPAddress ip = IPAddress.Any;
+            //    IPEndPoint remoteEndPoint = new IPEndPoint(ip, 7000);
+
+            //    //try
+            //    //{
+            //        Console.WriteLine("Receiver er startet");
+            //        while (true)
+            //        {
+            //            Byte[] receivebBytes = udpServer.Receive(ref remoteEndPoint);
+
+            //            string receivedData = Encoding.ASCII.GetString(receivebBytes);
+
+            //            string[] data = receivedData.Split('\n');
+
+            //            string motion = data[0];
+            //            string datoOgTid = data[1];
+
+            //            string[] tidsSplit = datoOgTid.Split(' ');
+
+            //            string dato = tidsSplit[1];
+            //            string tid = tidsSplit[2];
+
+            //            string[] motionSplit = motion.Split(' ', 2);
+
+            //            string motion1 = motionSplit[0];
+            //            string motion2 = motionSplit[1];
+
+            //            //Console.WriteLine(motion2);
+            //            //Console.WriteLine(dato);
+            //            //Console.WriteLine(tid);
+
+            //            //Sensor sensor = new Sensor();
+
+            //            //HttpResponseMessage mi = AddCustomerAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion2)).Result;
+
+
+            //    }
+            //    //}
+            //    //catch (Exception e)
+            //    //{
+            //    //    Console.WriteLine(e.ToString());
+            //    //
+            //    //}
+
+            //   
         }
-    }
+
+        }
 }
