@@ -33,7 +33,6 @@ namespace UDP_Receiver
 
                 return response;
             }
-
         }
 
         public static async Task<HttpResponseMessage> AddAlertAsync(Sensor sensor)
@@ -56,43 +55,15 @@ namespace UDP_Receiver
 
         }
 
-        public static async Task<IList<Sensor>> GetCustomersAsync()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                string content = await client.GetStringAsync(SensorUri);
-                IList<Sensor> cList = JsonConvert.DeserializeObject<IList<Sensor>>(content);
-                return cList;
-            }
-        }
-
         static void Main(string[] args)
         {
-            //Sensor newSensor = new Sensor("18/05/2019", "21:47:30", "Intruders Test");
-
-            //AddCustomerAsync(new Sensor("18/05/2019", "24:24:24", "Intruders here"));
-
-            //Thread.Sleep(3000);
-
-            //IList<Sensor> result = GetCustomersAsync().Result;
-            //Console.WriteLine(result.Count);
-            //foreach (var i in result)
-            //{
-            //    Console.WriteLine(i.ToString());
-            //}
-
-            //Console.ReadLine();
-            
             // Skaber en UDPClient for det data der skal læses
-
             UdpClient udpServer = new UdpClient(7000);
 
             //Laver en IPEndPoint til at læse IP Address og Port nummer for afsenderen
             IPAddress ip = IPAddress.Any;
             IPEndPoint remoteEndPoint = new IPEndPoint(ip, 7000);
 
-            //try
-            //{
             Console.WriteLine("Receiver er startet");
             while (true)
             {
@@ -115,27 +86,11 @@ namespace UDP_Receiver
                 string motion1 = motionSplit[0];
                 string motion2 = motionSplit[1];
 
-                //Console.WriteLine(motion2);
-                //Console.WriteLine(dato);
-                //Console.WriteLine(tid);
-
                 Sensor sensor = new Sensor();
 
                 HttpResponseMessage mi = AddSensorAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion2)).Result;
                 HttpResponseMessage mi2 = AddAlertAsync(new Sensor(sensor.Dato = dato, sensor.Tid = tid, sensor.Motion = motion2)).Result;
-
-
-
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //
-            //}
-
-
         }
-
     }
 }
